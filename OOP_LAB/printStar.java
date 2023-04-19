@@ -1,4 +1,3 @@
-package ans;
 import java.util.Scanner;
 public class printStar {
 
