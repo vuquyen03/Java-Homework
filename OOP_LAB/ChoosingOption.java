@@ -1,4 +1,4 @@
-package abc;
+package oopLab;
 import javax.swing.JOptionPane;
 public class ChoosingOption {
 
