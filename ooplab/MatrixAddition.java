@@ -1,3 +1,4 @@
+package ooplab;
 import java.util.Scanner;
 
 public class MatrixAddition {
