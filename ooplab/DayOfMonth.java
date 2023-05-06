@@ -20,13 +20,10 @@ public class DayOfMonth {
 	}
 	
 	static boolean leapYear(int year) {
-		if(year%400 == 0 ) {
-			return true;
-		}
-		else if(year%100 ==0) {
+		if(year%100 == 0 && year%400 != 0) {
 			return false;
 		}
-		else if(year%4 ==0) {
+		else if(year%4 == 0) {
 			return true;
 		}
 		else {
@@ -64,25 +61,24 @@ public class DayOfMonth {
 		System.out.print("Input year you want: ");
 		String year = sc.nextLine();
 		while(true) {
-			if(!isInteger(year)) {
+			if(isInteger(year)){
+				int num = Integer.parseInt(year);
+				if(num > 0) {
+					System.out.println("Year: "+year);
+					printAns(month,num,arr);
+					break;
+				}
+				else {
+					System.out.print("Input year you want again: ");
+					year = sc.nextLine();
+				}
+			}
+			else{
 				System.out.print("Input year you want again: ");
 				year = sc.nextLine();
-				continue;
-			}
-			int num = Integer.parseInt(year);
-			if(num<0) {
-				System.out.print("Input year you want again: ");
-				year = sc.nextLine();
-				continue;
-			}
-			else {
-				System.out.println("Year: "+year);
-				printAns(month,num,arr);
-				break;
 			}
 		}
 	}
-	
 	
 	public static void main(String[] args) {
 		String[] months = {"Jan.","Jan", "1",
