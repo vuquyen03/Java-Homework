@@ -16,10 +16,7 @@ public class DayOfMonth {
 	
 	static boolean checkInputMonth(String month, String[] arr) {
 		List<String> list = Arrays.asList(arr);
-		if(list.contains(month)) {
-			return true;
-		}
-		return false;
+		return list.contains(month)?true:false;
 	}
 	
 	static boolean leapYear(int year) {
@@ -60,15 +57,14 @@ public class DayOfMonth {
 		Scanner sc = new Scanner(System.in);
 		System.out.print("Input month you want: ");
 		String month = sc.nextLine();
-		List<String> list = Arrays.asList(arr);
-		while (checkInputMonth(month,arr) == false) {
+		while (!checkInputMonth(month,arr)) {
 			System.out.print("Input month you want again: ");
 			month = sc.nextLine();
 		}
 		System.out.print("Input year you want: ");
 		String year = sc.nextLine();
-		while(true ) {
-			if(isInteger(year) == false) {
+		while(true) {
+			if(!isInteger(year)) {
 				System.out.print("Input year you want again: ");
 				year = sc.nextLine();
 				continue;
@@ -101,7 +97,6 @@ public class DayOfMonth {
 						   "Oct.","Oct","10",
 						   "Nov.", "Nov","11",
 						   "Dec.","Dec","12"};
-		System.out.println(months.length);
 		inputClient(months);
 	}
 }
