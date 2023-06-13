@@ -49,7 +49,7 @@ public class Aims {
                 for(Media media : store.itemsInStore){
                     System.out.println(media.getTitle());
                 }
-                storeMenu();
+
                 chooseStoreMenu();
                 break;
 
@@ -84,8 +84,10 @@ public class Aims {
     }
 
     public static void chooseStoreMenu(){
-        int choice = sc.nextInt();
+        int choice;
         while (true) {
+            storeMenu();
+            choice = sc.nextInt();
             sc.nextLine();
             // See a media’s details
             if (choice == 1) {
@@ -100,7 +102,7 @@ public class Aims {
                     }
                     mediaDetailsMenu();
                 }
-                break;
+
             } else if (choice ==2){ //Add a media to cart
                 System.out.print("Enter the title of the media: ");
                 String title = sc.nextLine();
@@ -108,13 +110,12 @@ public class Aims {
                 if (medias.size() != 0) {
                     for (Media media : medias) {
                         cart.addMedia(media); // add item into cart
-                        System.out.println("Added " + media.getTitle() + " to cart.");
                     }
                     System.out.println("Number of items on cart: " + cart.getSize());
                 } else{
                     System.out.println("Media not found.");
                 }
-                break;
+
             } else if(choice ==3){ //Play a media
                 System.out.print("Enter the title of the media: ");
                 String title = sc.nextLine();
@@ -132,11 +133,10 @@ public class Aims {
                 } else{
                     System.out.println("Media not found.");
                 }
-                break;
+
             } else if (choice ==4){ //See current cart
 
                 currentCart();
-                break;
             } else if (choice ==0){ //Back
 
                 showMenu();
@@ -144,7 +144,6 @@ public class Aims {
                 break;
             }else{
                 System.out.println("Invalid value. Please choose a number: 0-1-2-3-4");
-                choice = sc.nextInt();
             }
         }
     }
