@@ -42,32 +42,35 @@ public class Aims {
     }
 
     public static void viewMenu(){
-        int a = sc.nextInt();
-        while (a != 0){
 
-            if(a == 1){ //View store
+        int choice;
+        while (true){
+            showMenu();
+            choice = sc.nextInt();
+
+            if(choice == 1){ //View store
                 for(Media media : store.itemsInStore){
                     System.out.println(media.getTitle());
                 }
 
                 chooseStoreMenu();
                 break;
-
-            }else if (a ==2){ //Update store
+            }else if (choice ==2){ //Update store
 
                 viewUpdateStore();
                 break;
-
-            }else if(a == 3){ //See current cart
+            }else if(choice == 3){ //See current cart
 
                 cartMenu();
                 currentCart();
                 break;
-            } else{
+            }else if(choice ==0){
 
+                break;
+            } else{
                 System.out.println("Choose number again .....");
-                a = sc.nextInt();
             }
+
         }
     }
 
@@ -139,7 +142,6 @@ public class Aims {
                 currentCart();
             } else if (choice ==0){ //Back
 
-                showMenu();
                 viewMenu();
                 break;
             }else{
@@ -169,7 +171,7 @@ public class Aims {
             } else if (choice == 2){ //remove a media to store
                 removeStore();
             } else if (choice == 0){
-                showMenu();
+
                 viewMenu();
                 break;
             } else{
@@ -179,46 +181,50 @@ public class Aims {
     }
 
     public static void addStore(){
-        System.out.println("Which type (Book,CD,DVD)");
+        System.out.print("Which type (Book,CD,DVD): ");
         String type = sc.nextLine();
 
-        System.out.println("Enter the id of media:");
+        System.out.print("Enter the id of media: ");
         int id = sc.nextInt();
+        sc.nextLine();
 
-        System.out.println("Enter the title of the media:");
+        System.out.print("Enter the title of the media: ");
         String title = sc.nextLine();
 
-        System.out.println("Enter the cost of the media:");
+        System.out.print("Enter the cost of the media: ");
         float cost = sc.nextFloat();
         sc.nextLine();
 
-        System.out.println("Enter category of the media:");
+        System.out.print("Enter category of the media: ");
         String category = sc.nextLine();
 
         if(type.equals("Book")){
             store.addMedia(new Book(id, title, category, cost));
-        } else if(type.equals("Cd")){
-            System.out.println("Enter director of the Cd:");
+        } else if(type.equals("CD")){
+            System.out.print("Enter director of the Cd: ");
             String director = sc.nextLine();
-            System.out.println("Enter artist of the Cd:");
+            System.out.print("Enter artist of the Cd: ");
             String artist = sc.nextLine();
-            System.out.println("Enter number of track of Cd:");
+            System.out.print("Enter number of track of Cd: ");
             int count = sc.nextInt();
             ArrayList<Track> tracks = new ArrayList<>();
-            for (int i = 1; i<=0; i++){
+
+            for (int i = 1; i <= count; i++){
                 System.out.println("Track " + i +":");
-                System.out.println("Enter title of track:");
+                System.out.print("Enter title of track: ");
+
+                sc.nextLine();
                 String title_track = sc.nextLine();
-                System.out.println("Length of track:");
+                System.out.print("Length of track: ");
                 int length = sc.nextInt();
-
+                tracks.add(new Track(title_track, length));
             }
-
             store.addMedia(new CompactDisc(id, title, category, cost, artist, tracks, director));
+
         } else if(type.equals("DVD")){
-            System.out.println("Enter director of the DVD:");
+            System.out.print("Enter director of the DVD: ");
             String director = sc.nextLine();
-            System.out.println("Enter length of the DVD:");
+            System.out.print("Enter length of the DVD: ");
             int length = sc.nextInt();
             store.addMedia(new DigitalVideoDisc(id, title, category, director, length, cost));
         }
@@ -232,24 +238,34 @@ public class Aims {
         System.out.println("Which type (Book,CD,DVD)");
         String type = sc.nextLine();
 
-    }
-    public static void mediaDetailsMenu() {
-        System.out.println("Options: ");
-        System.out.println("--------------------------------");
-        System.out.println("1. Add to cart");
-        System.out.println("2. Play");
-        System.out.println("0. Back");
-        System.out.println("--------------------------------");
-        System.out.println("Please choose a number: 0-1-2");
+        System.out.print("Name of media you want to remove: ");
+        String title = sc.nextLine();
 
-        int choice = sc.nextInt();
-        sc.nextLine(); // ignore newline
+        ArrayList<Media> removeList = store.search(title);
+        for(Media media : removeList){
+            store.removeMedia(media);
+        }
+    }
+
+    public static void mediaDetailsMenu() {
 
         while(true){
+            System.out.println("Options: ");
+            System.out.println("--------------------------------");
+            System.out.println("1. Add to cart");
+            System.out.println("2. Play");
+            System.out.println("0. Back");
+            System.out.println("--------------------------------");
+            System.out.println("Please choose a number: 0-1-2");
+
+            int choice = sc.nextInt();
+            sc.nextLine();
+
             if (choice == 0){
                 storeMenu();
                 chooseStoreMenu();
                 break;
+
             }else if(choice == 1){
                 // Add to cart
                 System.out.print("Enter the title of the media: ");
@@ -263,7 +279,7 @@ public class Aims {
                 } else {
                     System.out.println("Media not found.");
                 }
-                break;
+
             }else if (choice == 2){
                 System.out.print("Enter the title of the media: ");
                 String title = sc.nextLine();
@@ -281,7 +297,6 @@ public class Aims {
                 } else{
                     System.out.println("Media not found.");
                 }
-                break;
             }else{
                 System.out.println("Invalid value\n");
                 choice = sc.nextInt();
@@ -324,7 +339,6 @@ public class Aims {
                 placeOrder();
             }else if (choice ==0){ //Back
 
-                showMenu();
                 viewMenu();
                 break;
             }else{
@@ -429,7 +443,6 @@ public class Aims {
     public static void main(String[] args) {
 
         StoreItems();
-        showMenu();
         viewMenu();
     }
 }
