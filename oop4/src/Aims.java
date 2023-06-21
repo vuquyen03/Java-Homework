@@ -27,7 +27,6 @@ public class Aims {
         cart.addMedia(dvd1);
         cart.addMedia(dvd2);
         cart.addMedia(dvd3);
-        cart.addMedia(book1);
     }
 
     public static void showMenu() {
@@ -61,7 +60,6 @@ public class Aims {
                 break;
             }else if(choice == 3){ //See current cart
 
-                cartMenu();
                 currentCart();
                 break;
             }else if(choice ==0){
@@ -99,11 +97,12 @@ public class Aims {
                 ArrayList<Media> medias = store.search(title);
                 if(medias.size() == 0){
                     System.out.println("Media not found");
-                }else{
+                } else{
                     for(Media media : medias){
                         System.out.println(media.toString());
                     }
                     mediaDetailsMenu();
+                    break;
                 }
 
             } else if (choice ==2){ //Add a media to cart
@@ -115,6 +114,7 @@ public class Aims {
                         cart.addMedia(media); // add item into cart
                     }
                     System.out.println("Number of items on cart: " + cart.getSize());
+
                 } else{
                     System.out.println("Media not found.");
                 }
@@ -140,6 +140,7 @@ public class Aims {
             } else if (choice ==4){ //See current cart
 
                 currentCart();
+                break;
             } else if (choice ==0){ //Back
 
                 viewMenu();
@@ -262,7 +263,6 @@ public class Aims {
             sc.nextLine();
 
             if (choice == 0){
-                storeMenu();
                 chooseStoreMenu();
                 break;
 
@@ -348,62 +348,60 @@ public class Aims {
     }
 
     public static void filterMedia(){
-        while (true){
-            System.out.println("1. Filter by id");
-            System.out.println("2. Filter by title");
-            System.out.println("0. Back");
-            int option = sc.nextInt();
+        System.out.println("1. Filter by id");
+        System.out.println("2. Filter by title");
+        System.out.println("0. Back");
+        int option = sc.nextInt();
 
-            if (option == 1) {
-                // Ask the user for an id to filter the medias in the cart
-                System.out.println("Please enter an id:");
-                int id = sc.nextInt();
+        if (option == 1) {
+            // Ask the user for an id to filter the medias in the cart
+            System.out.println("Please enter an id:");
+            int id = sc.nextInt();
 
-                // Filter the medias in the cart by the specified id
-                List<Media> filteredMedias = new ArrayList<>();
-                for (Media media : cart.getItems()) {
-                    if (media.getId() == id) {
-                        filteredMedias.add(media);
-                    }
+            // Filter the medias in the cart by the specified id
+            List<Media> filteredMedias = new ArrayList<>();
+            for (Media media : cart.getItemsOrdered()) {
+                if (media.getId() == id) {
+                    filteredMedias.add(media);
                 }
-
-                if(filteredMedias.isEmpty()){
-                    System.out.println("Media not found.");
-                }
-
-                // Display the filtered medias to the user
-                for (Media media : filteredMedias) {
-                    System.out.println(media.getTitle() + " (" + media.getCategory() + "): $" + media.getCost());
-                }
-            } else if (option == 2) {
-                sc.nextLine();
-                // Ask the user for a title to filter the medias in the cart
-                System.out.println("Please enter a title:");
-                String title = sc.nextLine();
-
-                // Filter the medias in the cart by the specified title
-                List<Media> filteredMedias = new ArrayList<>();
-                for (Media media : cart.getItems()) {
-                    if (media.getTitle().equals(title)) {
-                        filteredMedias.add(media);
-                    }
-                }
-
-                if(filteredMedias.isEmpty()){
-                    System.out.println("Media not found.");
-                }
-
-                // Display the filtered medias to the user
-                for (Media media : filteredMedias) {
-                    System.out.println(media.getTitle() + " (" + media.getCategory() + "): $" + media.getCost());
-                }
-
-            }else if(option == 0){
-                currentCart();
-                break;
-            }else {
-                System.out.println("Invalid option selected. Please try again.");
             }
+
+            if(filteredMedias.isEmpty()){
+                System.out.println("Media not found.");
+            }
+
+            // Display the filtered medias to the user
+            for (Media media : filteredMedias) {
+                System.out.println(media.getTitle() + " (" + media.getCategory() + "): $" + media.getCost());
+            }
+
+        } else if (option == 2) {
+            sc.nextLine();
+            // Ask the user for a title to filter the medias in the cart
+            System.out.println("Please enter a title:");
+            String title = sc.nextLine();
+
+            // Filter the medias in the cart by the specified title
+            List<Media> filteredMedias = new ArrayList<>();
+            for (Media media : cart.getItemsOrdered()) {
+                if (media.getTitle().equals(title)) {
+                    filteredMedias.add(media);
+                }
+            }
+
+            if(filteredMedias.isEmpty()){
+                System.out.println("Media not found.");
+            }
+
+            // Display the filtered medias to the user
+            for (Media media : filteredMedias) {
+                System.out.println(media.getTitle() + " (" + media.getCategory() + "): $" + media.getCost());
+            }
+
+        }else if(option == 0){
+            currentCart();
+        }else {
+            System.out.println("Invalid option selected. ");
         }
     }
 
@@ -416,16 +414,16 @@ public class Aims {
         sc.nextLine(); // consume the newline character
 
         if (choice == 1) {
-            Collections.sort(cart.getItems(), Media.COMPARE_BY_TITLE_COST);
+            Collections.sort(cart.getItemsOrdered(), Media.COMPARE_BY_TITLE_COST);
             System.out.println("Medias sorted by title.");
-            for (Media m : cart.getItems()){
+            for (Media m : cart.getItemsOrdered()){
                 System.out.println(m.toString());
             }
 
         } else if (choice == 2) {
-            Collections.sort(cart.getItems(),Media.COMPARE_BY_COST_TITLE);
+            Collections.sort(cart.getItemsOrdered(),Media.COMPARE_BY_COST_TITLE);
             System.out.println("Medias sorted by cost.");
-            for (Media m : cart.getItems()){
+            for (Media m : cart.getItemsOrdered()){
                 System.out.println(m.toString());
             }
 
@@ -435,13 +433,12 @@ public class Aims {
     }
 
     public static void placeOrder(){
-        System.out.println(cart.getItems().toString());
+        System.out.println(cart.getItemsOrdered().toString());
         System.out.println("An order has been created. Thank you for shopping with us!");
         cart.clear();
     }
 
     public static void main(String[] args) {
-
         StoreItems();
         viewMenu();
     }
