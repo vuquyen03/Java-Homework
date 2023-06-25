@@ -5,8 +5,10 @@ import hust.soict.dsai.aims.media.Book;
 import hust.soict.dsai.aims.media.DigitalVideoDisc;
 import hust.soict.dsai.aims.media.Media;
 import hust.soict.dsai.aims.media.Playable;
+import hust.soict.dsai.aims.store.Store;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,11 +25,13 @@ import java.awt.event.ActionListener;
 
 public class CartScreenController {
 
+    private Cart cart;
+    private Store store;
+
     @FXML
     private Button btnPlay;
     @FXML
     private Button btnRemove;
-    private Cart cart;
     @FXML
     private TableView<Media> tblMedia;
     @FXML
@@ -47,15 +51,17 @@ public class CartScreenController {
     @FXML
     private RadioButton radioBtnFilterTitle;
 
-    public CartScreenController(Cart cart){
+    public CartScreenController(Cart cart, Store store){
         super();
         this.cart = cart;
+        this.store = store;
     }
 
     private FilteredList<Media> filteredCartList;
 
     @FXML
     private void initialize(){
+
         colMediaTitle.setCellValueFactory(
                 new PropertyValueFactory<Media, String>("title"));
         colMediacategory.setCellValueFactory(
@@ -63,9 +69,9 @@ public class CartScreenController {
         colMediaCost.setCellValueFactory(
                 new PropertyValueFactory<Media, Float>("cost"));
 
-        cart.addMedia(new Book(4,"Life of Pi", "Adventure fiction", 18.10f));
-        cart.addMedia(new DigitalVideoDisc(1,"The Lion King",
-                "Animation", "Roger Allers", 87, 19.95f));
+//        cart.addMedia(new Book(4,"Life of Pi", "Adventure fiction", 18.10f));
+//        cart.addMedia(new DigitalVideoDisc(1,"The Lion King",
+//                "Animation", "Roger Allers", 87, 19.95f));
 
         filteredCartList = new FilteredList<>(cart.getItemsOrdered());
         tblMedia.setItems(filteredCartList);
@@ -107,19 +113,20 @@ public class CartScreenController {
     }
 
     private void placeOrder(boolean input){
-       if(input == true){
-
-       } else {
-           JDialog orderDialog = new JDialog(new JFrame(), "Notification");
+        JDialog orderDialog = new JDialog(new JFrame(), "Notification");
+        if(input == true){
+            String title = "Order has been created";
+            JLabel orderLabel = new JLabel(title,SwingConstants.CENTER);
+            orderDialog.add(orderLabel);
+        } else {
            String title = "Cart is empty";
-
            JLabel orderLabel = new JLabel(title, SwingConstants.CENTER);
            orderDialog.add(orderLabel);
-           orderDialog.setLocation(500,500);
-           orderDialog.setSize(600,200);
-           orderDialog.pack();
-           orderDialog.setVisible(true);
-       }
+        }
+
+        orderDialog.setLocation(600,400);
+        orderDialog.setSize(200,100);
+        orderDialog.setVisible(true);
     }
 
     @FXML
@@ -128,8 +135,8 @@ public class CartScreenController {
             placeOrder(false);
         } else {
             cart.clear();
-            initialize();
             placeOrder(true);
+            updateCost(cart);
         }
     }
 
@@ -156,12 +163,28 @@ public class CartScreenController {
     }
 
     private void updateCost(Cart cart){
-        float cost = 0;
-        for (Media media : cart.getItemsOrdered()){
-            cost += media.getCost();
-        }
+        float cost = cart.totalCost();
         totalCost.setText(String.format("%.2f$", cost));
     }
 
+    @FXML
+    void addBookMenuItem(ActionEvent event) {
+        new AddBookToStoreScreen(store);
+    }
+
+    @FXML
+    void addCDMenuItem(ActionEvent event) {
+        new AddCompactDiscToStoreScreen(store);
+    }
+
+    @FXML
+    void addDVDMenuItem(ActionEvent event) {
+        new AddDigitalVideoDiscToStoreScreen(store);
+    }
+
+    @FXML
+    void viewStoreMenu(ActionEvent event) {
+        new StoreScreen(store, cart);
+    }
 
 }

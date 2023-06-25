@@ -17,9 +17,15 @@ public class Track implements Playable{
     public Track(){
 
     }
-    public Track(String title, int length){
-        this.length = length;
-        this.title= title;
+    public Track(String title, int length) throws IllegalArgumentException  {
+        super();
+        this.title = title;
+        if (length <= 0) {
+            throw new IllegalArgumentException("Disc length must be positive");
+        }
+        else {
+            this.length = length;
+        }
     }
 
     public void play() throws PlayerException {

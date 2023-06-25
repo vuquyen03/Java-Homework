@@ -49,7 +49,7 @@ public class Aims {
             choice = sc.nextInt();
 
             if(choice == 1){ //View store
-                for(Media media : store.itemsInStore){
+                for(Media media : store.getItemsInStore()){
                     System.out.println(media.getTitle());
                 }
 
@@ -234,7 +234,7 @@ public class Aims {
     }
 
     public static void removeStore(){
-        for(Media media : store.itemsInStore){
+        for(Media media : store.getItemsInStore()){
             System.out.println(media.toString());
         }
         System.out.println("Which type (Book,CD,DVD)");

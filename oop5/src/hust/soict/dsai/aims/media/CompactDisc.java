@@ -4,6 +4,7 @@ import hust.soict.dsai.aims.exception.PlayerException;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
 
 public class CompactDisc extends Disc implements Playable {
     private String artist;
@@ -20,9 +21,10 @@ public class CompactDisc extends Disc implements Playable {
         this.tracks = tracks;
     }
 
-
-    public CompactDisc(int id, String title, String category, float cost, int length, String director) {
-        super(id, title, category, cost, length, director);
+    public CompactDisc(String title, String category, float cost, String director, String artist){
+        super(title,category,cost);
+        this.setDirector(director);
+        this.artist = artist;
     }
 
     public CompactDisc(int id, String title, String category, float cost,
@@ -59,8 +61,19 @@ public class CompactDisc extends Disc implements Playable {
     }
 
     public void play() throws PlayerException {
-        for (Track track : tracks) {
-            track.play();
+        if(this.getLength() > 0){
+            Iterator iter = tracks.iterator();
+            Track nextTrack;
+            while (iter.hasNext()){
+                nextTrack = (Track) iter.next();
+                try {
+                    nextTrack.play();
+                } catch (PlayerException e){
+                    throw e;
+                }
+            }
+        } else{
+            throw new PlayerException("ERROR: CD length is non-positive!");
         }
     }
 

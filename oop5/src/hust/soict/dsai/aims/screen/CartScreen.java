@@ -1,6 +1,7 @@
 package hust.soict.dsai.aims.screen;
 
 import hust.soict.dsai.aims.cart.Cart;
+import hust.soict.dsai.aims.store.Store;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.fxml.FXMLLoader;
@@ -12,15 +13,18 @@ import java.io.IOException;
 
 public class CartScreen extends JFrame {
     private Cart cart;
-    public CartScreen (Cart cart){
+    private Store store;
+    public CartScreen (Cart cart, Store store){
         super();
-
         this.cart = cart;
+        this.store = store;
+
         JFXPanel fxPanel = new JFXPanel();
         this.add(fxPanel);
 
         this.setTitle("Cart");
         this.setVisible(true);
+        this.setSize(1100, 700);
 
         Platform.runLater(new Runnable() {
             @Override
@@ -28,7 +32,7 @@ public class CartScreen extends JFrame {
                 try{
                     FXMLLoader loader = new FXMLLoader(getClass()
                             .getResource("cart.fxml"));
-                    CartScreenController controller = new CartScreenController(cart);
+                    CartScreenController controller = new CartScreenController(cart, store);
                     loader.setController(controller);
                     Parent root = loader.load();
                     fxPanel.setScene(new Scene(root));
@@ -39,12 +43,4 @@ public class CartScreen extends JFrame {
         });
     }
 
-    public static void main (String[] args){
-        Cart cart = new Cart();
-        CartScreen cartScreen = new CartScreen(cart);
-        cartScreen.setSize(1100, 700);
-        cartScreen.setLocationRelativeTo(null);
-        cartScreen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        cartScreen.setVisible(true);
-    }
 }

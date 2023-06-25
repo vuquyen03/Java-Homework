@@ -6,9 +6,13 @@ import hust.soict.dsai.aims.media.Media;
 import java.util.*;
 
 public class Store {
-    public ArrayList<Media> itemsInStore = new ArrayList<Media>();
+    private ArrayList<Media> itemsInStore = new ArrayList<Media>();
     public void addMedia(Media media){
-        itemsInStore.add(media);
+        if (itemsInStore.contains(media)){
+            System.out.println("This item exists");
+        } else{
+            itemsInStore.add(media);
+        }
     }
 
     public ArrayList<Media> getItemsInStore(){

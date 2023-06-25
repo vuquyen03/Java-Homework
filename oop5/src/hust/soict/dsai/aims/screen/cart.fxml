@@ -25,16 +25,12 @@
               <menus>
                 <Menu mnemonicParsing="false" text="Options">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="Add Book" />
-                        <MenuItem mnemonicParsing="false" text="Add CD" />
-                        <MenuItem mnemonicParsing="false" text="Add DVD" />
+                    <MenuItem mnemonicParsing="false" onAction="#addBookMenuItem" text="Add Book" />
+                        <MenuItem mnemonicParsing="false" onAction="#addCDMenuItem" text="Add CD" />
+                        <MenuItem mnemonicParsing="false" onAction="#addDVDMenuItem" text="Add DVD" />
                   </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="View Store">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="Delete" />
-                  </items>
-                </Menu>
+                <Menu mnemonicParsing="false" onAction="#viewStoreMenu" text="View Store" />
                 <Menu mnemonicParsing="false" text="View Cart">
                   <items>
                     <MenuItem mnemonicParsing="false" text="About" />

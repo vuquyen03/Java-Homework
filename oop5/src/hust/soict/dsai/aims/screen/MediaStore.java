@@ -1,19 +1,26 @@
 package hust.soict.dsai.aims.screen;
 
 import hust.soict.dsai.aims.cart.Cart;
+import hust.soict.dsai.aims.exception.PlayerException;
+import hust.soict.dsai.aims.media.CompactDisc;
+import hust.soict.dsai.aims.media.DigitalVideoDisc;
 import hust.soict.dsai.aims.media.Media;
 import hust.soict.dsai.aims.media.Playable;
 
+import javax.naming.LimitExceededException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MediaStore extends JPanel {
-    private Cart cart = new Cart();
+    private Cart cart;
     private Media media;
-    public MediaStore(Media media){
+    public MediaStore(Media media, Cart cart){
+        super();
         this.media = media;
+        this.cart = cart;
+
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         JLabel title = new JLabel(media.getTitle());
@@ -37,7 +44,7 @@ public class MediaStore extends JPanel {
                 JLabel l = new JLabel("You are playing " + media.getTitle());
                 dialog.add(l,BorderLayout.CENTER);
                 dialog.setSize(200, 200);
-                dialog.setLocation(0,0);
+                dialog.setLocation(500,200);
                 dialog.setVisible(true);
             }
         });
@@ -46,8 +53,21 @@ public class MediaStore extends JPanel {
         addCart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                cart.addMedia(media);
-            }
+                JDialog Dialog = new JDialog(new JFrame(), "Notification");
+                if (cart.getItemsOrdered().contains(media)){
+                    JLabel Label = new JLabel("Media already exists in cart", SwingConstants.CENTER);
+                    Dialog.add(Label);
+                } else{
+                    cart.addMedia(media);
+                    String notification;
+                    notification = media.getTitle();
+                    JLabel Label = new JLabel(notification, SwingConstants.CENTER);
+                    Dialog.add(Label);
+                }
+                Dialog.setLocation(500,200);
+                Dialog.setSize(200,100);Dialog.setVisible(true);
+              }
+
         });
 
         container.add(addCart);
@@ -64,4 +84,5 @@ public class MediaStore extends JPanel {
 
         this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     }
+
 }
