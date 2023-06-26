@@ -1,14 +1,11 @@
 package hust.soict.dsai.aims.screen;
 
 import hust.soict.dsai.aims.cart.Cart;
-import hust.soict.dsai.aims.media.Book;
-import hust.soict.dsai.aims.media.DigitalVideoDisc;
 import hust.soict.dsai.aims.media.Media;
 import hust.soict.dsai.aims.media.Playable;
 import hust.soict.dsai.aims.store.Store;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.ListChangeListener;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,7 +18,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import javax.swing.*;
-import java.awt.event.ActionListener;
+
+import static javafx.application.Platform.runLater;
+
 
 public class CartScreenController {
 
@@ -50,6 +49,9 @@ public class CartScreenController {
     private RadioButton radioBtnFilterId;
     @FXML
     private RadioButton radioBtnFilterTitle;
+    @FXML
+    private MenuItem viewStore;
+
 
     public CartScreenController(Cart cart, Store store){
         super();
@@ -61,17 +63,12 @@ public class CartScreenController {
 
     @FXML
     private void initialize(){
-
         colMediaTitle.setCellValueFactory(
                 new PropertyValueFactory<Media, String>("title"));
         colMediacategory.setCellValueFactory(
                 new PropertyValueFactory<Media, String>("category"));
         colMediaCost.setCellValueFactory(
                 new PropertyValueFactory<Media, Float>("cost"));
-
-//        cart.addMedia(new Book(4,"Life of Pi", "Adventure fiction", 18.10f));
-//        cart.addMedia(new DigitalVideoDisc(1,"The Lion King",
-//                "Animation", "Roger Allers", 87, 19.95f));
 
         filteredCartList = new FilteredList<>(cart.getItemsOrdered());
         tblMedia.setItems(filteredCartList);
@@ -91,6 +88,9 @@ public class CartScreenController {
                 }
         );
 
+        cart.getItemsOrdered().addListener( (javafx.collections.ListChangeListener.Change<? extends Media> c) -> {
+            runLater(() -> totalCost.setText(String.format("%.2f $", cart.totalCost())));
+        });
 
         tfFilter.textProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -183,8 +183,7 @@ public class CartScreenController {
     }
 
     @FXML
-    void viewStoreMenu(ActionEvent event) {
+    void viewStoreMenuItemChosen(ActionEvent event) {
         new StoreScreen(store, cart);
     }
-
 }

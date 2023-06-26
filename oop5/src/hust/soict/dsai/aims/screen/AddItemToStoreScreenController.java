@@ -17,13 +17,10 @@ public class AddItemToStoreScreenController {
 
     @FXML
     protected Button btnAddToStore;
-
     @FXML
     protected TextField categoryTextField;
-
     @FXML
     protected TextField costTextField;
-
     @FXML
     protected TextField titleTextField;
 

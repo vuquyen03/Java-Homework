@@ -23,17 +23,17 @@
          <children>
             <MenuBar>
               <menus>
-                <Menu mnemonicParsing="false" text="Options">
+                <Menu mnemonicParsing="false" text="Option">
                   <items>
-                    <MenuItem mnemonicParsing="false" onAction="#addBookMenuItem" text="Add Book" />
-                        <MenuItem mnemonicParsing="false" onAction="#addCDMenuItem" text="Add CD" />
-                        <MenuItem mnemonicParsing="false" onAction="#addDVDMenuItem" text="Add DVD" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" onAction="#viewStoreMenu" text="View Store" />
-                <Menu mnemonicParsing="false" text="View Cart">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="About" />
+                        <Menu mnemonicParsing="false" text="Update store">
+                          <items>
+                          <MenuItem mnemonicParsing="false" onAction="#addBookMenuItem" text="Add Book" />
+                              <MenuItem mnemonicParsing="false" onAction="#addDVDMenuItem" text="Add DVD" />
+                              <MenuItem mnemonicParsing="false" onAction="#addCDMenuItem" text="Add CD" />
+                          </items>
+                        </Menu>
+                        <MenuItem fx:id="viewStore" mnemonicParsing="false" onAction="#viewStoreMenuItemChosen" text="View Store" />
+                        <MenuItem mnemonicParsing="false" text="View Cart" />
                   </items>
                 </Menu>
               </menus>

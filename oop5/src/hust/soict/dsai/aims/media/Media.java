@@ -39,18 +39,34 @@ public abstract class Media {
         return cost;
     }
 
-    public void setCost(float cost) {
-        this.cost = cost;
+    public void setCost(float cost) throws IllegalArgumentException{
+        try{
+            if (cost >= 0){
+                this.cost = cost;
+            } else {
+                throw new IllegalArgumentException("ERROR: Cost cannot be negative");
+            }
+        } catch (IllegalArgumentException e){
+            System.out.println("Cost cannot be negative");
+        }
     }
 
     public Media(){
 
     }
 
-    public Media (String title, String category, float cost){
+    public Media (String title, String category, float cost) throws IllegalArgumentException{
         this.title = title;
         this.category = category;
-        this.cost = cost;
+        try {
+            if (cost >= 0) {
+                this.cost = cost;
+            } else {
+                throw new IllegalArgumentException("ERROR: Cost cannot be negative");
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("Cost cannot be negative");
+        }
     }
 
     public Media(int id, String title, String category, float cost){
@@ -60,12 +76,20 @@ public abstract class Media {
 
 
     @Override
-    public boolean equals (Object o){
+    public boolean equals (Object o)  throws NullPointerException, ClassCastException{
         if(this == o){
             return true;
         }
-        if (!(o instanceof Track)) {
-            return false;
+        if(o == null || getClass() != o.getClass()){
+            try {
+                if (o == null) {
+                    throw new NullPointerException("ERROR: Object is null");
+                } else {
+                    throw new ClassCastException("ERROR: Class cast exception");
+                }
+            } catch (NullPointerException | ClassCastException enc) {
+                return false;
+            }
         }
         Media media = (Media) o;
         return this.title.equals(media.title);
@@ -78,32 +102,8 @@ public abstract class Media {
     public boolean search(String input) {
         if (title.contains(input)){
             return true;
-        }else{
+        } else{
             return false;
         }
     }
-
-
-//    public static void main(String[] args){
-//        List<Media> mediae = new ArrayList<Media>();
-//
-//        DigitalVideoDisc dvd = new DigitalVideoDisc("The Lion King",
-//                "Animation", "Roger Allers", 87, 19.95f);
-//
-//        DigitalVideoDisc dvd1 = new DigitalVideoDisc("ABC",
-//                "Animation", "Roger Allers", 87, 10.95f);
-//
-//        Disc cd = new Disc();
-//
-//        mediae.add(dvd);
-//        mediae.add(dvd1);
-//
-//        for (Media m : mediae){
-//            System.out.println(m.toString());
-//        }
-//        Collections.sort(mediae, COMPARE_BY_TITLE_COST);
-//        for (Media m : mediae){
-//            System.out.println(m.toString());
-//        }
-//    }
 }

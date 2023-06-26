@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="180.0" prefWidth="512.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="250.0" prefWidth="512.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <opaqueInsets>
         <Insets />
     </opaqueInsets>
@@ -43,6 +43,8 @@
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
                                 <Label text="Title:">
@@ -67,6 +69,18 @@
                                         <Insets left="10.0" right="15.0" />
                                     </GridPane.margin>
                                 </TextField>
+                        <Label text="Director:" GridPane.rowIndex="3" />
+                        <Label text="Length:" GridPane.rowIndex="4" />
+                        <TextField fx:id="directorTextField" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                           <GridPane.margin>
+                              <Insets left="10.0" right="15.0" />
+                           </GridPane.margin>
+                        </TextField>
+                        <TextField fx:id="lengthTextField" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                           <GridPane.margin>
+                              <Insets left="10.0" right="15.0" />
+                           </GridPane.margin>
+                        </TextField>
                             </children>
                         </GridPane>
                     </children>

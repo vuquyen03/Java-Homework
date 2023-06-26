@@ -65,7 +65,8 @@ public class MediaStore extends JPanel {
                     Dialog.add(Label);
                 }
                 Dialog.setLocation(500,200);
-                Dialog.setSize(200,100);Dialog.setVisible(true);
+                Dialog.setSize(200,100);
+                Dialog.setVisible(true);
               }
 
         });

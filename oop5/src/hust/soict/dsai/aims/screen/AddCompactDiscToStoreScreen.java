@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
@@ -56,7 +57,6 @@ class AddCompactDiscToStoreScreenController extends AddItemToStoreScreenControll
 
     @FXML
     private TextField artistTextField;
-
     @FXML
     private TextField directorTextField;
 
@@ -79,8 +79,17 @@ class AddCompactDiscToStoreScreenController extends AddItemToStoreScreenControll
         String category = categoryTextField.getText();
         String director = directorTextField.getText();
         String artist = artistTextField.getText();
-        float cost = (float) Double.parseDouble(costTextField.getText());
-
+        float cost;
+        try {
+            cost = Float.parseFloat(costTextField.getText());
+        } catch (NumberFormatException e) {
+            costTextField.setText("");
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to parse cost!");
+            alert.setTitle("Wrong type");
+            alert.setHeaderText(null);
+            alert.showAndWait();
+            return;
+        }
         addMediaStore(new CompactDisc(title, category, cost, director, artist));
         reset();
     }

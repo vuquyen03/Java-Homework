@@ -6,18 +6,21 @@ import hust.soict.dsai.aims.media.Book;
 import hust.soict.dsai.aims.media.DigitalVideoDisc;
 import hust.soict.dsai.aims.media.Media;
 import hust.soict.dsai.aims.store.Store;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
+
 
 public class StoreScreen extends JFrame {
     private Store store;
     private Cart cart;
+    private JPanel centerPanel;
 
     Container cp;
     private MenuItemListener menuItemListener = new MenuItemListener();
@@ -73,6 +76,7 @@ public class StoreScreen extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new CartScreen(cart, store);
+                setVisible(false);
             }
         });
         cartView.setPreferredSize(new Dimension (100,50));
@@ -91,7 +95,7 @@ public class StoreScreen extends JFrame {
         JPanel center = new JPanel();
         center.setLayout(new GridLayout(3,3,2,2));
 
-        ArrayList<Media> mediaInStore = store.getItemsInStore();
+        ObservableList<Media> mediaInStore = store.getItemsInStore();
         for(int i = 0; i<mediaInStore.size(); i++){
             MediaStore cell = new MediaStore(mediaInStore.get(i), cart);
             center.add(cell);
@@ -107,13 +111,15 @@ public class StoreScreen extends JFrame {
         cp = getContentPane();
         cp.setLayout(new BorderLayout());
 
+        centerPanel = createCenter();
         cp.add(createNorth(), BorderLayout.NORTH);
-        cp.add(createCenter(),BorderLayout.CENTER);
+        cp.add(centerPanel,BorderLayout.CENTER);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
         setTitle("Store");
         setSize(1024,768);
+
     }
 
     private class MenuItemListener implements ActionListener {
@@ -132,28 +138,8 @@ public class StoreScreen extends JFrame {
             }
             else if(menuItem.equals("View cart")) {
                 new CartScreen(cart, store);
+                setVisible(false);
             }
         }
-
-    }
-
-    public static void main(String[] args){
-        Store store = new Store();
-        Cart cart = new Cart();
-        store.addMedia(new Book(4,"Life of Pi", "Adventure fiction", 18.10f));
-        store.addMedia(new DigitalVideoDisc(1,"The Lion King",
-                "Animation", "Roger Allers", 87, 19.95f));
-        store.addMedia(new Book(2,"SpiderMan", "Animation", 10.95f));
-        store.addMedia(new Book(3,"SuperMan", "Animation", 8.95f));
-        store.addMedia(new Book(5,"Doraemon", "Animation", 5.95f));
-        store.addMedia(new Book(6,"AntMan", "Animation", 10.95f));
-        store.addMedia(new DigitalVideoDisc(7,"Aladin",
-                "Live action", "Roger Allers", 87, 19.95f));
-        store.addMedia(new DigitalVideoDisc(8,"The Little Mermaid",
-                "Live action", "Roger Allers", 87, 19.95f));
-        store.addMedia(new DigitalVideoDisc(9,"The Lion King",
-                "Animation", "Roger Allers", 87, 19.95f));
-
-        new StoreScreen(store, cart);
     }
 }

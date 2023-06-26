@@ -36,11 +36,16 @@ public class CompactDisc extends Disc implements Playable {
         this.setDirector(director);
     }
 
-    public void addTrack(Track track) {
-        if (tracks.contains(track)) {
-            System.out.println("This track already exists");
-        } else {
-            tracks.add(track);
+    public void addTrack(Track track) throws IllegalArgumentException{
+        try {
+            if (tracks.contains(track)) {
+                throw new IllegalArgumentException("ERROR: The track has already been added");
+            } else {
+                tracks.add(track);
+                System.out.println("Track added successfully");
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("The track has not been added");
         }
     }
 

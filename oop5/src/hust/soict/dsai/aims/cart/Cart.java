@@ -3,8 +3,9 @@ package hust.soict.dsai.aims.cart;
 import hust.soict.dsai.aims.media.Media;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.*;
 
 public class Cart {
@@ -13,6 +14,7 @@ public class Cart {
     public static final int MAX_NUMBERS_ORDERED = 20;
 
     private ObservableList<Media> itemsOrdered = FXCollections.observableArrayList();
+    private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     public ObservableList<Media> getItemsOrdered(){
         return itemsOrdered;
@@ -24,7 +26,9 @@ public class Cart {
         if(itemsOrdered.contains(media)){
             System.out.println("This media already exists");
         }else{
+            ArrayList<Media> oldItemsInStore = new ArrayList<Media>(itemsOrdered);
             itemsOrdered.add(media);
+            pcs.firePropertyChange("itemsInStore", oldItemsInStore, itemsOrdered);
         }
     }
 
@@ -35,7 +39,9 @@ public class Cart {
         } else if(!itemsOrdered.contains(media)){
             System.out.println("This media doesn't exist");
         } else{
+            ArrayList<Media> oldItemsInStore = new ArrayList<Media>(itemsOrdered);
             itemsOrdered.remove(media);
+            pcs.firePropertyChange("itemsInStore", oldItemsInStore, itemsOrdered);
         }
     }
 
@@ -81,5 +87,11 @@ public class Cart {
         System.out.println("------------------------------");
     }
 
+    public void addPropertyChangeListener(String itemsOrdered, PropertyChangeListener listener) {
+        pcs.addPropertyChangeListener(listener);
+    }
 
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        pcs.removePropertyChangeListener(listener);
+    }
 }

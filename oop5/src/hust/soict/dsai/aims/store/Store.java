@@ -2,11 +2,14 @@ package hust.soict.dsai.aims.store;
 
 import hust.soict.dsai.aims.media.DigitalVideoDisc;
 import hust.soict.dsai.aims.media.Media;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.*;
 
 public class Store {
-    private ArrayList<Media> itemsInStore = new ArrayList<Media>();
+    private ObservableList<Media> itemsInStore = FXCollections.observableArrayList();
+
     public void addMedia(Media media){
         if (itemsInStore.contains(media)){
             System.out.println("This item exists");
@@ -15,7 +18,7 @@ public class Store {
         }
     }
 
-    public ArrayList<Media> getItemsInStore(){
+    public ObservableList<Media> getItemsInStore(){
         return itemsInStore;
     }
 
@@ -23,7 +26,7 @@ public class Store {
         if (itemsInStore.contains(media)){
             itemsInStore.remove(media);
         }
-        else{
+        else {
             System.out.println("This item doesn't exist");
         }
     }

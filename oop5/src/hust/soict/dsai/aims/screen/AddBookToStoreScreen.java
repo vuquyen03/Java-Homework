@@ -7,14 +7,16 @@ import javax.swing.JFrame;
 import hust.soict.dsai.aims.media.Book;
 import hust.soict.dsai.aims.store.Store;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 
 public class AddBookToStoreScreen extends JFrame{
 
@@ -23,7 +25,6 @@ public class AddBookToStoreScreen extends JFrame{
     public AddBookToStoreScreen (Store store) {
         super();
         this.store = store;
-
         JFXPanel fxPanel = new JFXPanel();
         this.add(fxPanel);
 
@@ -52,7 +53,6 @@ public class AddBookToStoreScreen extends JFrame{
 }
 
 class AddBookToStoreScreenController extends AddItemToStoreScreenController{
-
     public AddBookToStoreScreenController(Store store) {
         super();
         this.store = store;
@@ -62,14 +62,18 @@ class AddBookToStoreScreenController extends AddItemToStoreScreenController{
     void btnAddToStoreClicked(ActionEvent event) {
         String title = titleTextField.getText();
         String category = categoryTextField.getText();
-        float cost = Float.parseFloat(costTextField.getText());
-
+        float cost;
+        try {
+            cost = Float.parseFloat(costTextField.getText());
+        } catch (NumberFormatException e) {
+            costTextField.setText("");
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to parse cost!");
+            alert.setTitle("Wrong type");
+            alert.setHeaderText(null);
+            alert.showAndWait();
+            return;
+        }
         addMediaStore(new Book(title, category, cost));
-//        if (store.getItemsInStore().contains(new Book(title, category, cost))){
-//            System.out.println("This item exists");
-//        } else{
-//            store.addMedia(new Book(title, category, cost));
-//        }
         reset();
     }
 

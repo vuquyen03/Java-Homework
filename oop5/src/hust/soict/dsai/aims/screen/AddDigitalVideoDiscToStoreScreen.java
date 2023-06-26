@@ -1,15 +1,14 @@
 package hust.soict.dsai.aims.screen;
 
 import java.io.IOException;
-import java.net.URL;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import hust.soict.dsai.aims.cart.Cart;
 import hust.soict.dsai.aims.media.DigitalVideoDisc;
+import hust.soict.dsai.aims.media.Media;
 import hust.soict.dsai.aims.store.Store;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
@@ -18,12 +17,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TextField;
 
 
 public class AddDigitalVideoDiscToStoreScreen extends JFrame{
 
     private Store store;
-
     public AddDigitalVideoDiscToStoreScreen (Store store) {
         super();
         this.store = store;
@@ -33,14 +33,13 @@ public class AddDigitalVideoDiscToStoreScreen extends JFrame{
 
         this.setTitle("Add DVD to Store");
         this.setVisible(true);
-        this.setSize(520,230);
+        this.setSize(520,300);
 
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
                 try {
-                    URL url = getClass().getResource("/hust/soict/dsai/aims/screen/addDVDToStoreScreen.fxml");
-                    FXMLLoader loader = new FXMLLoader(url);
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("addDVDToStoreScreen.fxml"));
 
                     AddDigitalVideoDiscToStoreController controller =
                             new AddDigitalVideoDiscToStoreController(store);
@@ -57,20 +56,52 @@ public class AddDigitalVideoDiscToStoreScreen extends JFrame{
 }
 
 class AddDigitalVideoDiscToStoreController extends AddItemToStoreScreenController {
+    @FXML
+    private TextField directorTextField;
+    @FXML
+    private TextField lengthTextField;
 
     public AddDigitalVideoDiscToStoreController(Store store) {
         super();
         this.store = store;
     }
 
+    public void reset() {
+        titleTextField.setText("");
+        categoryTextField.setText("");
+        costTextField.setText("");
+        directorTextField.setText("");
+        lengthTextField.setText("");
+    }
     @FXML
     void btnAddToStoreClicked(ActionEvent event) {
         String title = titleTextField.getText();
         String category = categoryTextField.getText();
-        float cost = (float) Double.parseDouble(costTextField.getText());
+        float cost;
+        try {
+            cost = Float.parseFloat(costTextField.getText());
+        } catch (NumberFormatException e) {
+            costTextField.setText("");
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to parse cost!");
+            alert.setTitle("Wrong type");
+            alert.setHeaderText(null);
+            alert.showAndWait();
+            return;
+        }
+        String director = directorTextField.getText();
+        int length;
+        try {
+            length = Integer.parseInt(lengthTextField.getText());
+        } catch(NumberFormatException e) {
+            lengthTextField.setText("");
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to parse length!");
+            alert.setTitle("Wrong type");
+            alert.setHeaderText(null);
+            alert.showAndWait();
+            return;
+        }
 
-        addMediaStore(new DigitalVideoDisc(title, category, cost));
+        addMediaStore(new DigitalVideoDisc(title, category, cost, director, length));
         reset();
     }
-
 }
